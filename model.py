@@ -24,12 +24,12 @@ EVAL_BATCH_SIZE = 5
 BATCH_SIZE = 5
 # for CamVid
 IMAGE_HEIGHT = 360
-IMAGE_WIDTH = 480
+IMAGE_WIDTH = 640
 IMAGE_DEPTH = 3
 
-NUM_CLASSES = 12
-NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = 367
-NUM_EXAMPLES_PER_EPOCH_FOR_TEST = 101
+NUM_CLASSES = 2
+NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = 30
+NUM_EXAMPLES_PER_EPOCH_FOR_TEST = 10
 NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = 1
 TEST_ITER = NUM_EXAMPLES_PER_EPOCH_FOR_TEST / BATCH_SIZE
 
@@ -247,8 +247,8 @@ def inference(images, labels, batch_size, phase_train):
     return loss, logit
 
 def train(total_loss, global_step):
-    total_sample = 192
-    num_batches_per_epoch = 192/1
+    total_sample = 191
+    num_batches_per_epoch = 191/1
     """ fix lr """
     lr = INITIAL_LEARNING_RATE
     loss_averages_op = _add_loss_summaries(total_loss)
