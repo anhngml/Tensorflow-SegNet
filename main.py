@@ -4,7 +4,7 @@ import model
 FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('testing', '', """ checkpoint file """)
-tf.app.flags.DEFINE_string('finetune', '', """ finetune checkpoint file """)
+tf.app.flags.DEFINE_string('finetune', 'Tensorflow-SegNet/Logs/model.ckpt-6000', """ finetune checkpoint file """)
 tf.app.flags.DEFINE_integer('batch_size', "2", """ batch_size """)
 tf.app.flags.DEFINE_float('learning_rate', "1e-3", """ initial lr """)
 tf.app.flags.DEFINE_string('log_dir', "Logs", """ dir to store ckpt """)

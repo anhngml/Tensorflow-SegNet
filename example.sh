@@ -8,3 +8,4 @@ python main.py --log_dir=/tmp3/first350/TensorFlow/Logs/ --image_dir=/tmp3/first
 
 #for testing
 # python main.py --testing=/tmp3/first350/TensorFlow/Logs/model.ckpt-19000  --log_dir=/tmp3/first350/TensorFlow/Logs/ --test_dir=/tmp3/first350/SegNet-Tutorial/CamVid/test.txt --batch_size=5 --save_image=True
+# python main.py --testing=Tensorflow-SegNet/Logs/model.ckpt-6000  --log_dir=Tensorflow-SegNet/Logs/ --test_dir=Tensorflow-SegNet/dataset/water_segmentation_test --batch_size=2 --save_image=True

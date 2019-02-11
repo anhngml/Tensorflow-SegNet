@@ -7,7 +7,8 @@ import numpy as np
 import math
 import skimage
 import skimage.io
-
+from skimage.transform import rescale, resize, downscale_local_mean
+from skimage.color import rgb2gray
 import glob
 
 IMAGE_HEIGHT = 360
@@ -140,11 +141,20 @@ def get_all_test_data(im_list, la_list):
     labels = []
     index = 0
     for im_filename, la_filename in zip(im_list, la_list):
-        im = np.array(skimage.io.imread(im_filename), np.float32)
+        im = skimage.io.imread(im_filename)
+        im = resize(im, (im.shape[0] / 2, im.shape[1] / 2))
+        # im = np.array(skimage.io.imread(im_filename), np.float32)
+        im = np.array(im, np.float32)
         im = im[np.newaxis]
+        # print(im.shape)
+
         la = skimage.io.imread(la_filename)
+        la = rgb2gray(la)
+        print(la.shape)
+        la = resize(la, (la.shape[0] / 2, la.shape[1] / 2))
         la = la[np.newaxis]
         la = la[..., np.newaxis]
+        print(la.shape)
         images.append(im)
         labels.append(la)
     return images, labels
