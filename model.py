@@ -20,8 +20,8 @@ NUM_EPOCHS_PER_DECAY = 350.0      # Epochs after which learning rate decays.
 LEARNING_RATE_DECAY_FACTOR = 0.1  # Learning rate decay factor.
 
 INITIAL_LEARNING_RATE = 0.001      # Initial learning rate.
-EVAL_BATCH_SIZE = 5
-BATCH_SIZE = 5
+EVAL_BATCH_SIZE = 1
+BATCH_SIZE = 1
 # for CamVid
 IMAGE_HEIGHT = 360
 IMAGE_WIDTH = 640

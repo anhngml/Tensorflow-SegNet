@@ -5,15 +5,15 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('testing', '', """ checkpoint file """)
 tf.app.flags.DEFINE_string('finetune', '', """ finetune checkpoint file """)
-tf.app.flags.DEFINE_integer('batch_size', "5", """ batch_size """)
+tf.app.flags.DEFINE_integer('batch_size', "2", """ batch_size """)
 tf.app.flags.DEFINE_float('learning_rate', "1e-3", """ initial lr """)
 tf.app.flags.DEFINE_string('log_dir', "Logs", """ dir to store ckpt """)
 tf.app.flags.DEFINE_string(
-    'image_dir', "dataset/water_segmentation_training", """ path to CamVid image """)
+    'image_dir', "Tensorflow-SegNet/dataset/water_segmentation_training", """ path to CamVid image """)
 tf.app.flags.DEFINE_string(
-    'test_dir', "dataset/water_segmentation_test", """ path to CamVid test image """)
+    'test_dir', "Tensorflow-SegNet/dataset/water_segmentation_test", """ path to CamVid test image """)
 tf.app.flags.DEFINE_string(
-    'val_dir', "dataset/water_segmentation_validation", """ path to CamVid val image """)
+    'val_dir', "Tensorflow-SegNet/dataset/water_segmentation_validation", """ path to CamVid val image """)
 tf.app.flags.DEFINE_integer('max_steps', "20000", """ max_steps """)
 tf.app.flags.DEFINE_integer('image_h', "360", """ image height """)
 tf.app.flags.DEFINE_integer('image_w', "640", """ image width """)
