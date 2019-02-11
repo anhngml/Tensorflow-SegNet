@@ -12,7 +12,7 @@ from math import ceil
 from tensorflow.python.ops import gen_nn_ops
 # modules
 from Utils import _variable_with_weight_decay, _variable_on_cpu, _add_loss_summaries, _activation_summary, print_hist_summery, get_hist, per_class_acc, writeImage
-from Inputs import *
+from Inputs_wl import *
 
 # Constants describing the training process.
 MOVING_AVERAGE_DECAY = 0.9999     # The decay to use for the moving average.
@@ -97,23 +97,27 @@ def weighted_loss(logits, labels, num_classes, head=None):
     return loss
 
 def cal_loss(logits, labels):
+    # loss_weight = np.array([
+    #   0.2595,
+    #   0.1826,
+    #   4.5640,
+    #   0.1417,
+    #   0.9051,
+    #   0.3826,
+    #   9.6446,
+    #   1.8418,
+    #   0.6823,
+    #   6.2478,
+    #   7.3614,
+    #   1.0974])  # class 0~11
+      
     loss_weight = np.array([
-      0.2595,
-      0.1826,
-      4.5640,
-      0.1417,
-      0.9051,
-      0.3826,
-      9.6446,
-      1.8418,
-      0.6823,
-      6.2478,
-      7.3614,
-      1.0974]) # class 0~11
+        0.2595,
+        1.0974])  # class 0~1
 
     labels = tf.cast(labels, tf.int32)
-    # return loss(logits, labels)
-    return weighted_loss(logits, labels, num_classes=NUM_CLASSES, head=loss_weight)
+    return loss(logits, labels)
+    # return weighted_loss(logits, labels, num_classes=NUM_CLASSES, head=loss_weight)
 
 def conv_layer_with_bn(inputT, shape, train_phase, activation=True, name=None):
     in_channel = shape[2]
@@ -204,25 +208,25 @@ def inference(images, labels, batch_size, phase_train):
     # upsample4
     # Need to change when using different dataset out_w, out_h
     # upsample4 = upsample_with_pool_indices(pool4, pool4_indices, pool4.get_shape(), out_w=45, out_h=60, scale=2, name='upsample4')
-    upsample4 = deconv_layer(pool4, [2, 2, 64, 64], [batch_size, 45, 60, 64], 2, "up4")
+    upsample4 = deconv_layer(pool4, [2, 2, 64, 64], [batch_size, 45, 80, 64], 2, "up4")
     # decode 4
     conv_decode4 = conv_layer_with_bn(upsample4, [7, 7, 64, 64], phase_train, False, name="conv_decode4")
 
     # upsample 3
     # upsample3 = upsample_with_pool_indices(conv_decode4, pool3_indices, conv_decode4.get_shape(), scale=2, name='upsample3')
-    upsample3= deconv_layer(conv_decode4, [2, 2, 64, 64], [batch_size, 90, 120, 64], 2, "up3")
+    upsample3= deconv_layer(conv_decode4, [2, 2, 64, 64], [batch_size, 90, 160, 64], 2, "up3")
     # decode 3
     conv_decode3 = conv_layer_with_bn(upsample3, [7, 7, 64, 64], phase_train, False, name="conv_decode3")
 
     # upsample2
     # upsample2 = upsample_with_pool_indices(conv_decode3, pool2_indices, conv_decode3.get_shape(), scale=2, name='upsample2')
-    upsample2= deconv_layer(conv_decode3, [2, 2, 64, 64], [batch_size, 180, 240, 64], 2, "up2")
+    upsample2= deconv_layer(conv_decode3, [2, 2, 64, 64], [batch_size, 180, 320, 64], 2, "up2")
     # decode 2
     conv_decode2 = conv_layer_with_bn(upsample2, [7, 7, 64, 64], phase_train, False, name="conv_decode2")
 
     # upsample1
     # upsample1 = upsample_with_pool_indices(conv_decode2, pool1_indices, conv_decode2.get_shape(), scale=2, name='upsample1')
-    upsample1= deconv_layer(conv_decode2, [2, 2, 64, 64], [batch_size, 360, 480, 64], 2, "up1")
+    upsample1= deconv_layer(conv_decode2, [2, 2, 64, 64], [batch_size, 360, 640, 64], 2, "up1")
     # decode4
     conv_decode1 = conv_layer_with_bn(upsample1, [7, 7, 64, 64], phase_train, False, name="conv_decode1")
     """ end of Decode """
@@ -243,8 +247,8 @@ def inference(images, labels, batch_size, phase_train):
     return loss, logit
 
 def train(total_loss, global_step):
-    total_sample = 274
-    num_batches_per_epoch = 274/1
+    total_sample = 192
+    num_batches_per_epoch = 192/1
     """ fix lr """
     lr = INITIAL_LEARNING_RATE
     loss_averages_op = _add_loss_summaries(total_loss)
@@ -292,7 +296,7 @@ def test(FLAGS):
         tf.float32,
         shape=[batch_size, image_h, image_w, image_c])
 
-  test_labels_node = tf.placeholder(tf.int64, shape=[batch_size, 360, 480, 1])
+  test_labels_node = tf.placeholder(tf.int64, shape=[batch_size, 360, 640, 1])
 
   phase_train = tf.placeholder(tf.bool, name='phase_train')
 
